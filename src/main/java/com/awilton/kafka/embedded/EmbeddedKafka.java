@@ -1,31 +1,32 @@
 package com.awilton.kafka.embedded;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.UUID;
+
+import kafka.admin.AdminUtils;
+import kafka.server.KafkaConfig;
+import kafka.server.KafkaServerStartable;
 
 import org.I0Itec.zkclient.ZkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import scala.collection.Seq;
-import kafka.admin.AdminUtils;
-import kafka.javaapi.producer.Producer;
-import kafka.producer.KeyedMessage;
-import kafka.server.KafkaConfig;
-import kafka.server.KafkaServerStartable;
-
-public class EmbeddedKafka {
+public class EmbeddedKafka<X,Y> {
   private static Logger log = LoggerFactory.getLogger(EmbeddedKafka.class);
-  public KafkaServerStartable kafka;
-  public  EmbeddedZooKeeper zookeeper;
+  
+  private EmbeddedZooKeeper zookeeper;
+  private EmbeddedProducer<X,Y> producer = null;
+  private KafkaServerStartable kafka;
   private ZkClient zkClient;
   private String zkHost;
-  private EmbeddedProducer<String,String> producer;
+  
+  private final int kafkaPort;
   
   public EmbeddedKafka(int zkport, int kfkaport) {
-    this.zookeeper = new EmbeddedZooKeeper(zkport);
+    this.kafkaPort = kfkaport;
+    
+    zookeeper = new EmbeddedZooKeeper(zkport);
     this.zkHost = "localhost:"+zkport;
     
     Properties kafkaProps = init(kfkaport);
@@ -33,14 +34,14 @@ public class EmbeddedKafka {
     
     log.info("Initializing kafka server with properties:" + kafkaProps.toString());
     KafkaConfig kafkaConfig = new KafkaConfig(kafkaProps);
+    
+    //Startup a single kafka instance
     kafka = new KafkaServerStartable(kafkaConfig);
     log.info("Starting Kafka");
     kafka.startup();
   
-    initZkClient();
-    this.producer = new EmbeddedProducer<String,String>(kfkaport);
     log.info("\n*************************************************************");
-    log.info("Started");
+    log.info("Embedded Kafka Service Started");
     log.info("\n*************************************************************");
     
   }
@@ -52,8 +53,13 @@ public class EmbeddedKafka {
     }
     //shutdown the kafka server
     this.kafka.shutdown();
+    
+    // shutdown zookeeper client
+    if (null != this.zkClient) this.zkClient.close();
+    
     // shutdown zookeeper
-    this.zkClient.close();
+    if (null != this.zookeeper) this.zookeeper.shutdown();
+    
   }
   public void createTopic(String topic) {
     log.info("ADMIN::Creating topic:"+topic);
@@ -67,20 +73,15 @@ public class EmbeddedKafka {
     AdminUtils.deleteTopic(zkClient, topic);
   }
   
-  public void sendMessage(String topic, String message) {
-    log.info("OP::Sending message to topic:"+topic);
-    KeyedMessage<String,String> msg = new KeyedMessage<String,String>(topic,null,message);
-    this.producer.send(msg);
-  }
   
-  public Producer<String,String> getProducer() {
-    if (null == this.producer) return null;
-    return this.producer.getProducer();
+  public EmbeddedProducer<X,Y> getProducer() {
+    if(null == this.producer) this.producer = new EmbeddedProducer<X,Y>(this.kafkaPort);
+    return this.producer;
   }
   
   private void initZkClient() {
     if (null != this.zkClient) return;
-    this. zkClient = new ZkClient(this.zkHost, 5000, 3000);
+    this. zkClient = new ZkClient(this.zkHost, 5000);
   }
   
   private Properties init(int port) {

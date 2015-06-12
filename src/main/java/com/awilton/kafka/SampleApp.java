@@ -10,12 +10,13 @@ public class SampleApp {
   private static final String topic = "TestTopic";
   
   public static void main(String[] args) throws InterruptedException {
-    EmbeddedKafka kafka = new EmbeddedKafka(5100,5101);
-    for (int i=0; i<500; i++) {
-      Thread.sleep(5000);
-      kafka.sendMessage(topic, "Hello"+i);
+    EmbeddedKafka<String,String> kafka = new EmbeddedKafka<String,String>(5100,5101);
+    for (int i=0; i<5; i++) {
+      Thread.sleep(500);
+      kafka.getProducer().send(topic, "Hello" + i);
     }
     kafka.shutdown();
+    System.exit(0);
   }
   
 }

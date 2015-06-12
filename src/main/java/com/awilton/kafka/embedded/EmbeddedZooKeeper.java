@@ -2,7 +2,6 @@ package com.awilton.kafka.embedded;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.util.Properties;
 
 import org.apache.zookeeper.server.ServerConfig;
@@ -14,10 +13,11 @@ import org.slf4j.LoggerFactory;
 public class EmbeddedZooKeeper {
   private static Logger log = LoggerFactory.getLogger(EmbeddedZooKeeper.class);
   
-  ZooKeeperServerMain zooKeeperServer;
+  private final ZooKeeperServerMain zooKeeperServer;
+  private Thread zkThread;
   
   public EmbeddedZooKeeper(int port) {
-    
+    zooKeeperServer = new ZooKeeperServerMain();
     QuorumPeerConfig quorumConfiguration = new QuorumPeerConfig();
     try {
       Properties p = init(port);
@@ -27,23 +27,30 @@ public class EmbeddedZooKeeper {
       throw new RuntimeException(e);
     }
     
-    zooKeeperServer = new ZooKeeperServerMain();
     final ServerConfig configuration = new ServerConfig();
     configuration.readFrom(quorumConfiguration);
-    
-    new Thread("zookeeper") {
-      public void run() {
-          try {
-              zooKeeperServer.runFromConfig(configuration);
-          } catch (IOException e) {
-              System.out.println("ZooKeeper Failed");
-              e.printStackTrace(System.err);
-          }
-      }
-    }.start();
-    
+    this.zkThread = initZkThread(configuration);
+    this.zkThread.start();
   }
   
+  private Thread initZkThread(final ServerConfig cfg) {
+    return new Thread("EmbeddedZookeeper") {
+      public void run() {
+        try {
+          zooKeeperServer.runFromConfig(cfg);
+        } catch (IOException e) {
+          log.error("Failed to initialize embedded zookeeper",e);
+          throw new RuntimeException(e);
+        }
+      }
+    };
+  }
+  
+  public void shutdown() {
+//    if (null != this.zkThread) zkThread.interrupt();
+  }
+  
+ 
   private Properties init(int port) {
     String stamp = Long.toString(System.currentTimeMillis());
     File tmp = new File("zktmp");
@@ -74,11 +81,8 @@ public class EmbeddedZooKeeper {
     p.setProperty("dataLogDir", logDir);
     p.setProperty("maxClientCnxns", "0");
     p.setProperty("electionAlg","2");
-    
-    
+    p.setProperty("tickTime", "10000"); 
     return p;
   }
-  
-  
   
 }

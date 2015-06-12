@@ -28,13 +28,23 @@ public class EmbeddedProducer<X,Y> {
     return this.producer;
   }
   
+  public void send(String topic, Y msg) {
+    KeyedMessage<X,Y> kMsg = new KeyedMessage<X,Y>(topic,null,msg);
+    this.sendMessage(kMsg);
+  }
+  
   public void send(List<KeyedMessage<X, Y>> messages) {
     this.producer.send(messages);
   }
   
-  
-  public void send(KeyedMessage<X, Y> msg) {
-    this.producer.send(msg);
+  public void sendMessage(KeyedMessage<X, Y> msg) {
+    try {
+      this.producer.send(msg);
+      log.debug(">>>>>>>>>>>>  Message sent");
+    } catch(Exception e) {
+      log.error("Failed to send",e);
+      throw new RuntimeException(e);
+    }
   }
 
   public void close() {
