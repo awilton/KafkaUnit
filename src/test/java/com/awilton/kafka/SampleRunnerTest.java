@@ -16,7 +16,7 @@ import com.awilton.kafka.runners.KafkaRunner;
 public class SampleRunnerTest 
 {
     private static Logger log = LoggerFactory.getLogger("foo");
- 
+    
     @Test
     public void TestZK() throws Exception {
       log.info("Testing");

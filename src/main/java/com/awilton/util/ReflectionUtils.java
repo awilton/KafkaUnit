@@ -2,6 +2,10 @@ package com.awilton.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.runners.model.TestClass;
 
 public abstract class ReflectionUtils {
   

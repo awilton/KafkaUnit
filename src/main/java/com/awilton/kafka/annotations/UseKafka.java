@@ -16,7 +16,15 @@ import java.lang.annotation.RetentionPolicy;
  * The second optional parameter, <code>kafkaPort</code> declares the network 
  * port that the embedded Kafka Server will bind to and listen on
  * 
+ * <code>
  * 
+ * @UseKafka(zkPort=5100, kafkaPort=5101)
+ * @RunWith(KafkaRunner.class)
+ * public class MyTestClass {
+ *  // test methods
+ * } 
+ * 
+ * </code>
  * 
  * @author awilton
  *
