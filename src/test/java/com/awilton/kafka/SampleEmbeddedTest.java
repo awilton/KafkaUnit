@@ -12,7 +12,7 @@ public class SampleEmbeddedTest {
   public void sampleEmbeddedTest() throws Exception {
     for (int i=0;i<100;i++) {
       Thread.sleep(5000);
-      this.kafka.getProducer().send(topic, "Embedded:"+i);
+      kafka.getProducer().send(topic, "Embedded:"+i);
     }
   }
   
