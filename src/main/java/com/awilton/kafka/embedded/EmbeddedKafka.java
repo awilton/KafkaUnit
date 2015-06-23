@@ -85,6 +85,7 @@ public class EmbeddedKafka<X,Y> {
   }
   
   private Properties init(int port) {
+    // @TODO provide better location for temp dirs and clean them up
     File tmp = new File("./ktmp");
     if (!tmp.exists()) tmp.mkdir();
     

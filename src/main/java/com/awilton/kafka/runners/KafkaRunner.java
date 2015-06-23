@@ -6,7 +6,6 @@ import java.util.Properties;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.ProducerConfig;
 
-import org.junit.runner.RunWith;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
@@ -38,7 +37,6 @@ public class KafkaRunner extends BlockJUnit4ClassRunner {
   private static final Logger log = LoggerFactory.getLogger(KafkaRunner.class);
   private static final int DEFAULT_KAFKA_PORT = 9092;
   private UseKafka ka = null;
-  private  EmbeddedKafka kafka;
   
   public KafkaRunner(Class<?> klass) throws InitializationError {
     super(klass);
@@ -46,7 +44,8 @@ public class KafkaRunner extends BlockJUnit4ClassRunner {
     log.info("Starting custom runner from class:" + klass.getCanonicalName());
     this.ka = klass.getAnnotation(UseKafka.class);
     if (null != ka) {
-      kafka = new EmbeddedKafka(ka.zkPort(),ka.kafkaPort());
+      @SuppressWarnings("rawtypes")      
+      EmbeddedKafka kafka = new EmbeddedKafka(ka.zkPort(),ka.kafkaPort());
     }
     
   }
@@ -61,7 +60,7 @@ public class KafkaRunner extends BlockJUnit4ClassRunner {
     log.info("Setting up new test object");
     Object testObject = getTestClass().getOnlyConstructor().newInstance();
     
-    Class c = getTestClass().getJavaClass();
+    Class<?> c = getTestClass().getJavaClass();
     log.info("TestClass is:"+c.getName());
    
     
