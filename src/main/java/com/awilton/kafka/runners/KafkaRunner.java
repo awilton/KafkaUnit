@@ -77,7 +77,8 @@ public class KafkaRunner extends BlockJUnit4ClassRunner {
             if (null != this.ka)  port = ka.kafkaPort();
           }
           ProducerConfig pc = new ProducerConfig(producerProps(kp.host(),port));
-          Producer<String,String> prod = new Producer<String,String>(pc);
+          @SuppressWarnings("rawtypes")
+          Producer prod = new Producer(pc);
   
           ReflectionUtils.makeAccessible(f);
           f.set(testObject, prod);

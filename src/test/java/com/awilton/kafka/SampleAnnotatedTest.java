@@ -20,7 +20,7 @@ public class SampleAnnotatedTest {
   private static final String topic = "AnnotationTestTopic";
   
   @KafkaProducer
-  Producer p;
+  Producer<String,String> p;
   
   @Test
   public void AnnotationTestA() throws Exception {
