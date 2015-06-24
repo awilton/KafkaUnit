@@ -23,7 +23,7 @@ import com.awilton.reflection.ReflectionUtils;
  * 
  * <code>
  * 
- * @RunWith(KafkaRunner.class)
+ * {@literal @}RunWith(KafkaRunner.class)
  * public class MyTestClass {
  *  // test methods
  * } 

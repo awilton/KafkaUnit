@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Annotated a class field that identifies a <code>javaapi.producer</code>
  * Allows for two optional parameters.
- * <code>host</host> identifies the kafka host (default is localhost)
+ * <code>host</code> identifies the kafka host (default is localhost)
  * <code>port</code> identifies the kafka port 
  * Default port is 9092 unless Class is annotated with UseKafka.
  * Then the port assigned in the UseKafka annotation will become the default

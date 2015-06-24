@@ -18,8 +18,8 @@ import java.lang.annotation.RetentionPolicy;
  * 
  * <code>
  * 
- * @UseKafka(zkPort=5100, kafkaPort=5101)
- * @RunWith(KafkaRunner.class)
+ * {@literal @}UseKafka(zkPort=5100, kafkaPort=5101)
+ * {@literal @}RunWith(KafkaRunner.class)
  * public class MyTestClass {
  *  // test methods
  * } 
