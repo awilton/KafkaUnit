@@ -1,4 +1,4 @@
-package com.awilton.kafka.runners;
+package com.awilton.junit.kafka.runners;
 
 import java.lang.reflect.Field;
 import java.util.Properties;
@@ -13,10 +13,10 @@ import org.junit.runners.model.InitializationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.awilton.kafka.annotations.KafkaProducer;
-import com.awilton.kafka.annotations.UseKafka;
-import com.awilton.kafka.embedded.EmbeddedKafka;
-import com.awilton.util.ReflectionUtils;
+import com.awilton.junit.kafka.annotations.KafkaProducer;
+import com.awilton.junit.kafka.annotations.UseKafka;
+import com.awilton.junit.kafka.embedded.EmbeddedKafka;
+import com.awilton.reflection.ReflectionUtils;
 
 /**
  * Runner Class to be used with JUnit tests

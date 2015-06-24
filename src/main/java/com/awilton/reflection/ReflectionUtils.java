@@ -1,4 +1,4 @@
-package com.awilton.util;
+package com.awilton.reflection;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

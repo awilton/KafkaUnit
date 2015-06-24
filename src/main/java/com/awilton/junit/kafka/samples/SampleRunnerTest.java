@@ -1,4 +1,4 @@
-package com.awilton.kafka;
+package com.awilton.junit.kafka.samples;
 
 
 import org.junit.Test;
@@ -6,9 +6,9 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.awilton.kafka.annotations.UseKafka;
-import com.awilton.kafka.embedded.EmbeddedProducer;
-import com.awilton.kafka.runners.KafkaRunner;
+import com.awilton.junit.kafka.annotations.UseKafka;
+import com.awilton.junit.kafka.embedded.EmbeddedProducer;
+import com.awilton.junit.kafka.runners.KafkaRunner;
 
 
 @UseKafka(zkPort=5100, kafkaPort=5101)

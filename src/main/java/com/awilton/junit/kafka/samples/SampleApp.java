@@ -1,9 +1,9 @@
-package com.awilton.kafka;
+package com.awilton.junit.kafka.samples;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.awilton.kafka.embedded.EmbeddedKafka;
+import com.awilton.junit.kafka.embedded.EmbeddedKafka;
 
 public class SampleApp {
   private static final Logger log = LoggerFactory.getLogger(SampleApp.class);

@@ -10,6 +10,7 @@
 	<version>0.1-SNAPSHOT</version>
 
 	<name>kafka-unit</name>
+	<description>Utilities Library for testing kafka clients</description>
 
 	<url>http://maven.apache.org</url>
 
@@ -33,7 +34,7 @@
 		</developer>
 	</developers>  
     <scm>
-        <url>https://github.com/kevinsawicki/github-maven-example</url>
+        <url>https://github.com/awilton/KafkaUnit</url>
         <connection>scm:git:git://github.com/awilton/KafkaUnit.git</connection>
         <developerConnection>scm:git:git@github.com/awilton/KafkaUnit.git</developerConnection>
     </scm>

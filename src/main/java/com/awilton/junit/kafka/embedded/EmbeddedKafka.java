@@ -1,4 +1,4 @@
-package com.awilton.kafka.embedded;
+package com.awilton.junit.kafka.embedded;
 
 import java.io.File;
 import java.util.Properties;

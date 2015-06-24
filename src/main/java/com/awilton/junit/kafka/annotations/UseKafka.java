@@ -1,4 +1,4 @@
-package com.awilton.kafka.annotations;
+package com.awilton.junit.kafka.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
